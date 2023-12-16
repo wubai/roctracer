@@ -169,6 +169,13 @@ target_include_directories(dlopen PRIVATE ${PROJECT_SOURCE_DIR}/inc ${HSA_RUNTIM
 target_link_libraries(dlopen dl)
 add_dependencies(mytest dlopen)
 
+## Build register_tracer_callback test
+set_source_files_properties(directed/register_tracer_callback.cpp PROPERTIES HIP_SOURCE_PROPERTY_FORMAT 1)
+hip_add_executable(register_tracer_callback directed/register_tracer_callback.cpp)
+target_include_directories(register_tracer_callback PRIVATE ${PROJECT_SOURCE_DIR}/inc ${HSA_RUNTIME_INCLUDE_DIRECTORIES})
+target_link_libraries(register_tracer_callback dl roctracer)
+add_dependencies(mytest register_tracer_callback)
+
 ## Copy the golden traces and test scripts
 configure_file(run.sh ${PROJECT_BINARY_DIR} COPYONLY)
 execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink run.sh ${PROJECT_BINARY_DIR}/run_ci.sh)
